@@ -1,0 +1,33 @@
+# Git ignore rules for Lending Club NL Analytics project
+# Raw and intermediate data, credentials, and environment files are excluded
+# Data files
+data/raw/
+data/interim/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+ENV/
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+.profile_default/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# GCP / Credentials
+*.json
+credentials/
+gcp_credentials/
