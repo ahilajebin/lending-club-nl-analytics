@@ -13,6 +13,7 @@ __pycache__/
 .venv/
 venv/
 ENV/
+VertexAI_NLP_LoanData/archive/
 
 # Jupyter / IPython
 .ipynb_checkpoints/
