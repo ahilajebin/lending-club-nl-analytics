@@ -1,0 +1,15 @@
+I created the folder structure
+I downloaded the lending clubdata from Kaggle
+I loaded a sample of it into a dataframe and explored and cleaned it using the notebook 01_initial_eda_cleaning
+I committed the changes at this point (ie after data exploration and cleaning and feature selection) 
+Next I am going to load the cleaned data into bigquery, so I created a new project in the Google CLoud console and made sure BigQuery API is enabled
+Then, created a service account called lending_club_loader with the roles BigQuery Data Editor and BigQuery Job User
+Then in the keys tab of the service account, I created a new JSON key and stored it in my local outside my repo
+Then I set the environment variable in my Powershell with the command  $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\Ahila\Desktop\Ahila_UK\My_Projects\gcp-keys\lending-club-loader.json"
+Then created a venv using 'python -m venv venv', activated it using '.\venv\Scripts\activate' and 'python', then :
+'from google.cloud import bigquery
+client = bigquery.Client()
+print(client.project)
+to verify installation of google-bigquery'
+Got the output 'lendingclubvertexai' which is the name of the google cloud project
+
