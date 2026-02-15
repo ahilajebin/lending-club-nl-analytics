@@ -10,7 +10,7 @@ vertexai.init(
     location=LOCATION,
 )
 
-model = GenerativeModel("gemini-1.5-pro")
+model = GenerativeModel("gemini-1.5-flash-002")
 
 def explain_results(question, df):
     prompt = f"""

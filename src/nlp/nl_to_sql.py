@@ -6,7 +6,7 @@ from src.nlp.prompt_templates import BASE_PROMPT
 
 PROJECT_ID = os.getenv("lendingclubvertexai")
 LOCATION = "us-central1"
-MODEL_NAME = "gemini-1.5-pro"
+MODEL_NAME = "gemini-1.5-flash-002"
 
 vertexai.init(
     project=PROJECT_ID,
