@@ -27,6 +27,7 @@ Thumbs.db
 
 # Logs
 *.log
+ProcessNotes.txt
 
 # GCP / Credentials
 *.json
