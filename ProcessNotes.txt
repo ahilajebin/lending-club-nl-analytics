@@ -1,9 +1,9 @@
 I created the folder structure
 I downloaded the lending clubdata from Kaggle
-I loaded a sample of it into a dataframe and explored and cleaned it using the notebook 01_initial_eda_cleaning
+I loaded a sample of it into a dataframe and explored and cleaned it using the notebook initial_eda, data_cleaning and then feature_selection
 I committed the changes at this point (ie after data exploration and cleaning and feature selection) 
 Next I am going to load the cleaned data into bigquery, so I created a new project in the Google CLoud console and made sure BigQuery API is enabled
-Then, created a service account called lending_club_loader with the roles BigQuery Data Editor and BigQuery Job User
+Then, created a service account called lending_club_loader in IAM with the roles BigQuery Data Editor and BigQuery Job User
 Then in the keys tab of the service account, I created a new JSON key and stored it in my local outside my repo
 Then I set the environment variable in my Powershell with the command  $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\Ahila\Desktop\Ahila_UK\My_Projects\gcp-keys\lending-club-loader.json"
 Then created a venv using 'python -m venv venv', activated it using '.\venv\Scripts\activate' and 'python', then :
@@ -12,4 +12,37 @@ client = bigquery.Client()
 print(client.project)
 to verify installation of google-bigquery'
 Got the output 'lendingclubvertexai' which is the name of the google cloud project
+now I created the script scripts/load_to_bigquery.py to create the dataset in bidguery and load the table and ran it in my venv (activated the venv in my powershell using .\venv\Scripts\activate, check chatgpt on command I used to create the venv)
+After the script ran successfully, I'm able to see the dataset lending_club_analytics and the table loans_cleaned in bigquery
+I enabled the Vertex AI API in APIs & Services in Google Cloud Console
+I also added a role of Vertex AI User in Google Cloud Console → IAM & Admin → Service Accounts and added the role to the Permissions->Manage Access of my service account
+Then ensured that i can connect to Vertex AI API from powershell using:
+from google.cloud import aiplatform
+PROJECT_ID = "lendingclubvertexai"
+REGION = "us-central1"
+aiplatform.init(project=PROJECT_ID, location=REGION)
+print("Vertex AI initialized successfully")
+Then created the src/nlp/prompt_templates.py and src/nlp/nl_to_sql.py files for VERTEX AI: NL → SQL
+Then src/gcp/bigquery_client.py for BigQuery to run the query
+THen src/gcp/vertex_ai.py for the human-readable answer
+Next, opened Cloud Shell in Google Cloud Console and ran gcloud auth list and gcloud config list project
+Next, set some environment variables with:
+export PROJ=$GOOGLE_CLOUD_PROJECT 
+export APP=hello 
+export PORT=8080
+export REGION="us-central1"
+export TAG="gcr.io/$PROJ/$APP"
+Then, I enabled API's by running:
+gcloud services enable cloudbuild.googleapis.com         \
+                       containerregistry.googleapis.com  \
+                       run.googleapis.com 
+Next, went to Open Editor and created a folder called lendingclub
+Under this folder, created a file called requirements.txt with
+gunicorn==23.0.0
+Flask==2.3.2
+PAUSED AND STARTED WITH THE FLASK PART ON MY COMPUTER ONLY
+so, went to app/app.py and wrote the code
+Then, in app/templates/index.html, pasted the code
+Then ran from root folder (ie out of app folder) with python -m app.app and it ran and gave the webpage!!!!!!
+Next, asked the question "What is the average DTI for loans with grade A?" and clicked 'Ask'
 
