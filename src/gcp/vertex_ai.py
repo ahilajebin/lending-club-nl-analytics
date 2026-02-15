@@ -1,6 +1,16 @@
+import os
+import vertexai
 from vertexai.preview.generative_models import GenerativeModel
 
-model = GenerativeModel("gemini-1.0-pro")
+PROJECT_ID = os.getenv("lendingclubvertexai")
+LOCATION = "us-central1"
+
+vertexai.init(
+    project=PROJECT_ID,
+    location=LOCATION,
+)
+
+model = GenerativeModel("gemini-1.5-pro")
 
 def explain_results(question, df):
     prompt = f"""

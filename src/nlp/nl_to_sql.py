@@ -4,9 +4,9 @@ from vertexai.generative_models import GenerativeModel, GenerationConfig
 
 from src.nlp.prompt_templates import BASE_PROMPT
 
-PROJECT_ID = os.getenv("GCP_PROJECT_ID")
+PROJECT_ID = os.getenv("lendingclubvertexai")
 LOCATION = "us-central1"
-MODEL_NAME = "gemini-1.0-pro-001"
+MODEL_NAME = "gemini-1.5-pro"
 
 vertexai.init(
     project=PROJECT_ID,
