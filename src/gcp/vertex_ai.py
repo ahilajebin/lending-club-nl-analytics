@@ -3,14 +3,14 @@ import vertexai
 from vertexai.preview.generative_models import GenerativeModel
 
 PROJECT_ID = os.getenv("lendingclubvertexai")
-LOCATION = "us-central1"
+LOCATION = "us-east5"
 
 vertexai.init(
     project=PROJECT_ID,
     location=LOCATION,
 )
 
-model = GenerativeModel("gemini-1.5-flash")
+model = GenerativeModel("gemini-2.5-flash")
 
 def explain_results(question, df):
     prompt = f"""
