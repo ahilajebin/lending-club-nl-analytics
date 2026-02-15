@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, request
-from src.nlp.nl_to_sql.py import question_to_sql
-from src.gcp.bigquery_client.py import run_query
-from src.gcp.vertex_ai.py import explain_results
+from src.nlp.nl_to_sql import question_to_sql
+from src.gcp.bigquery_client import run_query
+from src.gcp.vertex_ai import explain_results
 
 app = Flask(__name__)
 
