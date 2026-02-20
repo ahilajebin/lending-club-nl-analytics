@@ -1,155 +1,164 @@
-Lending Club NL Analytics
-**Natural Language to SQL Analytics Platform using Vertex AI & BigQuery**
+# Lending Club NL Analytics
 
-## Project Summary
+Natural Language -> SQL-> BigQuery using Vertex AI (Gemini) + Cloud Run
 
-I built a production-ready Natural Language to SQL analytics platform that allows users to query a financial dataset using plain English.
+## Overview
 
-For example:
-> “What is the average DTI for loans with grade A?”
+This project is a cloud-based Natural Language to SQL analytics application built on Google Cloud.
 
-The system automatically:
+Users can ask questions in plain English. e.g.,
 
-1. Converts the question into valid BigQuery SQL using Google’s Gemini model
-2. Executes the query against a structured dataset
-3. Returns the computed result via a web interface
+> *"What is the average DTI for loans with grade A?"*
 
-The entire system is deployed serverlessly on Google Cloud.
+The system:
 
-This project encompases real-world LLM integration, prompt engineering, cloud deployment, and data infrastructure design.
+1. Converts the question into **BigQuery SQL** using **Vertex AI (Gemini)**
+2. Executes the query against a BigQuery dataset
+3. Returns the computed result through a Flask web app
 
----
+The entire application is deployed serverlessly on **Google Cloud Run**.
 
-## Problem It Solves
-
-Business stakeholders often need insights from structured datasets but:
-
-* Don’t know SQL
-* Depend on data teams for simple queries
-* Face delays in analytics workflows
-
-This application removes that bottleneck by enabling natural-language-driven data access while maintaining SQL control and guardrails.
-
----
 
 ## Architecture
 
-User Question -> Flask Web App (Cloud Run) -> Vertex AI (Gemini) → Generates BigQuery SQL -> BigQuery → Executes Query -> Formatted Result Returned to User
+User Question -> Flask App (Cloud Run) -> Vertex AI (Gemini Model) → Generates SQL -> BigQuery → Executes SQL -> Result Returned to User
 
-### Google Cloud Services Used:
 
-* Cloud Run (serverless backend)
-* Vertex AI (LLM inference)
-* BigQuery (data warehouse)
-* IAM (secure service-to-service authentication)
+## Tech Stack
 
-The entire system runs without local credentials and uses a service account with least-privilege access.
+* **Python 3.12**
+* **Flask**
+* **Vertex AI (Gemini)**
+* **BigQuery**
+* **Cloud Run**
+* **Docker**
+* **GitHub (CI/CD Deployment)**
 
----
 
-## Key Technical Components
+## Project Structure
 
-### Prompt Engineering for Structured Output
+lending-club-nl-analytics/
 
-I designed a constrained system prompt to ensure:
+  -notebooks
+      -initial_eda.ipynb
+      -feature_selection.ipynb
+      -data_cleaning.ipynb
+      
+  -data
+    -processes
+      -clean_lending_club.csv
+      
+  -scripts
+    -load_to_bigquery.py   # Script to load data to BigQuery
+    
+  -app/
+    -app.py                # Flask entry point
+    -templates
+      -index.html
 
-* Only allowed columns are used
-* Valid BigQuery SQL is generated
-* SQL-only output (no explanation text)
-* Protection against schema hallucination
+  -src/
+    -nlp/
+      -nl_to_sql.py      # Gemini prompt + SQL generation
+      -prompt_templates.py
+    -gcp
+      -bigquery_client.py  # Script to query the BigQuery dataset
+      -vertex_ai.py        # Vertex AI to get the question and return answer in English
+      
+  -requirements.txt
+  -Dockerfile
+  -README.md
 
-This reduces LLM unpredictability and improves reliability in structured environments.
 
----
+## How It Works
 
-### NL → SQL Execution Pipeline
+### Prompt Engineering
 
-The core pipeline:
+The model is guided with a strict system prompt:
 
-* User input → Gemini model
-* SQL generated dynamically
-* BigQuery job executed programmatically
-* Result parsed and returned as a clean response
-
-The application bridges generative AI with deterministic analytics execution.
-
----
-
-### Serverless Production Deployment
-
-Instead of running locally, I:
-
-* Containerized the Flask app
-* Deployed via GitHub → Cloud Run integration
-* Configured IAM roles (Vertex AI User, BigQuery Job User)
-* Managed environment variables securely
-* Debugged model access and API permissions
-
-This mirrors real-world production deployment scenarios.
-
----
-
-## Technologies Used
-
-* Python 3.12
-* Flask
-* Vertex AI (Gemini)
-* BigQuery
-* Cloud Run
-* Docker
-* GitHub CI/CD
-
----
-
-## Example Queries
-
-The system successfully handles:
-
-* Aggregations (AVG, COUNT, GROUP BY)
-* Filtering (WHERE conditions)
-* Multi-condition queries
-* Ranking (ORDER BY + LIMIT)
-* Comparative analysis
+* Uses only specified columns
+* Generates valid BigQuery SQL
+* Returns SQL only
+* Targets table loaded from cleaned data into BigQuery
 
 Example:
 
-> “Show the top 5 loan purposes with the highest average interest rate.”
+```python
+BASE_PROMPT = """
+You are a data analyst.
+Generate a BigQuery SQL query for table `lending_club.loans`.
 
-Generated SQL automatically and returned ranked results.
+Columns:
+loan_amnt, int_rate, annual_inc, emp_length,
+grade, home_ownership, purpose, loan_status, issue_d, dti
+
+Rules:
+- Use only these columns
+- Use valid BigQuery SQL
+- Return SQL only
+"""
+```
+
+
+## Deployment
+
+The application is deployed using:
+
+* Google Cloud Run
+* Direct GitHub integration
+* Automatic container build
+* Serverless execution
+
+Environment Variables required:
+
+```
+GCP_PROJECT_ID = <project-id>
+```
+
+IAM Roles required for Cloud Run service account:
+
+* Vertex AI User
+* BigQuery Job User
+* BigQuery Data Viewer
+
+
+## Example Queries
+
+Try asking:
+
+* What is the average DTI for loans with grade A?
+* What is the average interest rate by loan grade?
+* Which loan purpose has the highest average loan amount?
+* Show the top 5 loan purposes with the highest average interest rate.
 
 ---
 
-## Security & Guardrails
+## Security Considerations
 
-* Service account–based authentication (no hardcoded keys)
-* Restricted IAM roles
-* Column-level constraints in prompt
-* SELECT-only query pattern
-* No raw user SQL execution
-
-This prevents common LLM + database security risks.
+* Model prompt restricts allowed columns
+* SQL limited to SELECT operations
+* BigQuery permissions scoped to required roles
+* Cloud Run uses service account authentication
 
 ---
 
-## Challenges Solved
 
-During deployment, I:
+## Learning Outcomes
 
-* Debugged Cloud Run container errors
-* Resolved IAM permission conflicts
-* Enabled Generative AI model access at the project level
-* Fixed gRPC model-not-found errors
-* Configured environment variables correctly in production
+This project demonstrates:
 
-These issues required understanding how Vertex AI, IAM, and Cloud Run interact under the hood.
+* Production deployment of LLM-powered apps
+* Cloud IAM debugging
+* Vertex AI integration
+* Serverless architecture design
+* Prompt engineering for structured outputs
+* NL -> SQL system design
 
 ---
 
-## This project shows my ability to
+## Author
 
-* Integrate LLMs into structured data systems
-* Deploy production cloud applications
-* Debug distributed cloud architecture
-* Design safe NL → SQL systems
-* Apply prompt engineering in practical use cases
-* Work across ML, backend, and cloud infrastructure layers
+Name: Ahila J
+University / Program: MSc Data Science, University of Surrey
+LinkedIn / Portfolio Link: www.linkedin.com/in/ahilajebin 
+
+
