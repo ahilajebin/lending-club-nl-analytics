@@ -157,8 +157,8 @@ This project demonstrates:
 
 ## Author
 
-Name: Ahila J
-University / Program: MSc Data Science, University of Surrey
+Name: Ahila J<br>
+University / Program: University of Surrey, MSc Data Science <br>
 LinkedIn / Portfolio Link: www.linkedin.com/in/ahilajebin 
 
 
