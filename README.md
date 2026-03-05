@@ -36,7 +36,7 @@ User Question -> Flask App (Cloud Run) -> Vertex AI (Gemini Model) → Generates
 
 
 ## Project Structure
-
+```
 lending-club-nl-analytics/
 
   -notebooks
@@ -67,7 +67,7 @@ lending-club-nl-analytics/
   -requirements.txt
   -Dockerfile
   -README.md
-
+```
 
 ## How It Works
 
